@@ -1,0 +1,41 @@
+[gd_scene load_steps=3 format=3 uid="uid://cas7e0xxclk1c"]
+
+[ext_resource type="Script" path="res://Scripts/TimeScripts/GameTime.cs" id="1_67rxs"]
+[ext_resource type="Script" path="res://Scripts/EventSystem/EventController.cs" id="2_ojnni"]
+
+[node name="TimeControl" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_67rxs")
+
+[node name="TimeLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 339.0
+offset_top = 54.0
+offset_right = 379.0
+offset_bottom = 77.0
+
+[node name="EventController" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("2_ojnni")
+
+[node name="EventVBoxContainer" type="VBoxContainer" parent="EventController"]
+layout_mode = 0
+offset_left = 405.0
+offset_top = 229.0
+offset_right = 580.0
+offset_bottom = 341.0
+
+[node name="Button" type="Button" parent="EventController"]
+layout_mode = 0
+offset_left = 76.0
+offset_top = 34.0
+offset_right = 138.0
+offset_bottom = 52.0
+text = "Add Event"
