@@ -3,7 +3,7 @@ using System;
 
 public partial class EventLabel : Label
 {
-    EventObject parentEvent;
+    public EventObject parentEvent { get; set; }
     public string EventName { get; set; }
     public int RemainingDuration { get; set; }
 
@@ -24,9 +24,5 @@ public partial class EventLabel : Label
     public override void _Process(double delta)
     {
         Text = $"{parentEvent.EventName} - {parentEvent.RemainingDuration}";
-        if (parentEvent.RemainingDuration < 0)
-        {
-            QueueFree();
-        }
     }
 }
