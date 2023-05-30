@@ -1,11 +1,32 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
-public partial class TransactionContainer : Node
+public partial class TransactionContainer
 {
-    // Called when the node enters the scene tree for the first time.
-    public override void _Ready() { }
+    private Character _targetCharacter;
+    public Character TargetCharacter
+    {
+        get => _targetCharacter;
+        set => _targetCharacter = value;
+    }
 
-    // Called every frame. 'delta' is the elapsed time since the previous frame.
-    public override void _Process(double delta) { }
+    // Called when the node enters the scene tree for the first time.
+    private Dictionary<string, int> transactionItems;
+
+    public TransactionContainer(Dictionary<string, int> initialTransactionItems, Character target)
+    {
+        transactionItems = initialTransactionItems;
+        TargetCharacter = target;
+    }
+
+    public void addToItems(string type, int value)
+    {
+        transactionItems.Add(type, value);
+    }
+
+    public Dictionary<string, int> getDictionary()
+    {
+        return transactionItems;
+    }
 }

@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 public partial class EventObject : Node
 {
@@ -16,6 +17,14 @@ public partial class EventObject : Node
         set => _eventName = value;
     }
 
+    private List<TransactionContainer> _transactionItemsList;
+
+    public List<TransactionContainer> TransactionItemsList
+    {
+        get => _transactionItemsList;
+        set => _transactionItemsList = value;
+    }
+
     /*
     This was considered for a linked list type sturcture which would base
     itself on the remaining duration of the object. Objects would then link
@@ -24,17 +33,50 @@ public partial class EventObject : Node
     //public EventObject followingEvent = null;
 
     //Constructor
-    public EventObject(int duration, string name)
+    public EventObject(
+        int duration,
+        string name,
+        List<TransactionContainer> possibleTransaction = null
+    )
     {
+        if (possibleTransaction != null)
+            TransactionItemsList = possibleTransaction;
+        else
+            TransactionItemsList = new List<TransactionContainer>();
+
         RemainingDuration = duration;
         EventName = name;
     }
 
-    public override void _Process(double delta)
+    //public override void _Process(double delta)
+    //{
+    //
+    //}
+
+    public void endObject()
     {
-        if (RemainingDuration < 0)
+        performTransaction();
+        QueueFree();
+    }
+
+    private void performTransaction()
+    {
+        if (TransactionItemsList.Count > 0)
         {
-            QueueFree();
+            foreach (TransactionContainer container in TransactionItemsList)
+            {
+                foreach (KeyValuePair<string, int> item in container.getDictionary())
+                {
+                    switch (item.Key)
+                    {
+                        case "COINS":
+                            container.TargetCharacter.addCoins(item.Value);
+                            container.TargetCharacter.coinLabel.Text =
+                                container.TargetCharacter.Coin.ToString();
+                            break;
+                    }
+                }
+            }
         }
     }
 }

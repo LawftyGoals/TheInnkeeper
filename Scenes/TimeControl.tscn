@@ -1,25 +1,20 @@
-[gd_scene load_steps=3 format=3 uid="uid://cas7e0xxclk1c"]
+[gd_scene load_steps=4 format=3 uid="uid://cas7e0xxclk1c"]
 
 [ext_resource type="Script" path="res://Scripts/TimeScripts/GameTime.cs" id="1_67rxs"]
 [ext_resource type="Script" path="res://Scripts/EventSystem/EventController.cs" id="2_ojnni"]
+[ext_resource type="Script" path="res://Scripts/Character/Character.cs" id="3_2xxwc"]
 
-[node name="TimeControl" type="Control"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="TimeControl" type="Node"]
 script = ExtResource("1_67rxs")
 
 [node name="TimeLabel" type="Label" parent="."]
-layout_mode = 0
 offset_left = 339.0
 offset_top = 54.0
 offset_right = 379.0
 offset_bottom = 77.0
 
 [node name="EventController" type="Control" parent="."]
+layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
@@ -40,3 +35,12 @@ offset_right = 138.0
 offset_bottom = 52.0
 focus_mode = 0
 text = "Add Event"
+
+[node name="PlayerCharacter" type="Node" parent="."]
+script = ExtResource("3_2xxwc")
+
+[node name="CoinLabel" type="Label" parent="PlayerCharacter"]
+offset_left = 283.0
+offset_top = 33.0
+offset_right = 323.0
+offset_bottom = 56.0

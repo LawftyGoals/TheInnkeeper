@@ -23,11 +23,15 @@ public partial class Character : Node
         //set => _experience = value;
     }
 
+    public Label coinLabel;
+
     public override void _Ready()
     {
-        Name = "Innkeeper";
+        CharacterName = "Innkeeper";
         _experience = 0;
         _coin = 500;
+        coinLabel = GetNode<Label>("CoinLabel");
+        coinLabel.Text = Coin.ToString();
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.

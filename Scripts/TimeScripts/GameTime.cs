@@ -85,7 +85,7 @@ public partial class GameTime : Node
             hour++;
             DeltaConvert = 0;
             timeLabel.Text = hour.ToString();
-            EventController.updateTimeOnEventList();
+            EventController.handleTimeOnEventList();
             EventController.eventLabelKiller();
         }
     }
