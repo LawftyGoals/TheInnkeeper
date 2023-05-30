@@ -3,15 +3,30 @@ using System;
 
 public partial class EventLabel : Label
 {
-    public EventObject parentEvent { get; set; }
-    public string EventName { get; set; }
-    public int RemainingDuration { get; set; }
+    private EventObject _parentEvent;
+    public EventObject ParentEvent
+    {
+        get => _parentEvent;
+        set => _parentEvent = value;
+    }
+    private string _eventName;
+    public string EventName
+    {
+        get => _eventName;
+        set => _eventName = value;
+    }
+    private int _remainingDuration;
+    public int RemainingDuration
+    {
+        get => _remainingDuration;
+        set => _remainingDuration = value;
+    }
 
     public EventLabel(string name, int duration, EventObject eventObject)
     {
         EventName = name;
         RemainingDuration = duration;
-        parentEvent = eventObject;
+        ParentEvent = eventObject;
     }
 
     // Called when the node enters the scene tree for the first time.
@@ -23,6 +38,6 @@ public partial class EventLabel : Label
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Process(double delta)
     {
-        Text = $"{parentEvent.EventName} - {parentEvent.RemainingDuration}";
+        Text = $"{ParentEvent.EventName} - {ParentEvent.RemainingDuration}";
     }
 }

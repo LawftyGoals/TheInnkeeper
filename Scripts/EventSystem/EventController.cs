@@ -6,7 +6,7 @@ public partial class EventController : Node
 {
     List<EventObject> EventList;
     VBoxContainer EventVBoxList;
-    Button AddEvent;
+    private Button AddEvent;
 
     public override void _Ready()
     {
@@ -14,17 +14,27 @@ public partial class EventController : Node
         EventVBoxList = GetNode<VBoxContainer>("EventVBoxContainer");
         AddEvent = GetNode<Button>("Button");
         AddEvent.Pressed += tempAddEvent;
-
-        GD.Print(GetChildren());
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Process(double delta) { }
 
+    public void eventLabelKiller()
+    {
+        foreach (EventLabel eventLabel in EventVBoxList.GetChildren())
+        {
+            if (eventLabel.ParentEvent.RemainingDuration < 0)
+            {
+                eventLabel.QueueFree();
+            }
+        }
+    }
+
     private void tempAddEvent()
     {
-        GD.Print("pressed button!");
         addEventToEventList(new EventObject(5, "boogy"));
+        // please remember the following = AddEvent.ReleaseFocus();
+        // also that there is a focus mode under inspector that can be set to None
     }
 
     public void updateTimeOnEventList()
@@ -32,15 +42,12 @@ public partial class EventController : Node
         foreach (EventObject eventObject in EventList)
         {
             eventObject.RemainingDuration--;
-            GD.Print(EventVBoxList.GetChildren());
         }
     }
 
     public void addEventToEventList(EventObject eventObject)
     {
-        GD.Print("added event");
         EventList.Add(eventObject);
-
         EventVBoxList.AddChild(
             new EventLabel(eventObject.EventName, eventObject.RemainingDuration, eventObject)
         );

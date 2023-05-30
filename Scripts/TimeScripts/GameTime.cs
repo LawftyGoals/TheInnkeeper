@@ -3,9 +3,15 @@ using System;
 
 public partial class GameTime : Node
 {
-    int speed;
-    int hour;
-    double deltaConvert { get; set; } = 0;
+    private int speed;
+    private int hour;
+    private bool paused = true;
+    private double _deltaConvert;
+    public double DeltaConvert
+    {
+        get => _deltaConvert;
+        set => _deltaConvert = value;
+    }
 
     double[] speedValues = { 2, 1, 0.75, 0.5, 0.25 };
 
@@ -19,6 +25,8 @@ public partial class GameTime : Node
         hour = 0;
         speed = 1;
 
+        DeltaConvert = 0;
+
         timeLabel = GetNode<Label>("TimeLabel");
         EventController = GetNode<EventController>("EventController");
     }
@@ -26,7 +34,10 @@ public partial class GameTime : Node
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Process(double delta)
     {
-        timeUpdate(delta);
+        if (!paused)
+        {
+            timeUpdate(delta);
+        }
     }
 
     public override void _UnhandledInput(InputEvent @event)
@@ -42,8 +53,16 @@ public partial class GameTime : Node
                 case Key.Comma:
                     reduceSpeed();
                     break;
+                case Key.Space:
+                    togglePause();
+                    break;
             }
         }
+    }
+
+    public void togglePause()
+    {
+        paused = !paused;
     }
 
     private void addSpeed()
@@ -60,13 +79,14 @@ public partial class GameTime : Node
 
     private void timeUpdate(double delta)
     {
-        deltaConvert += delta;
-        if (deltaConvert >= speedValues[speed])
+        DeltaConvert += delta;
+        if (DeltaConvert >= speedValues[speed])
         {
             hour++;
-            deltaConvert = 0;
+            DeltaConvert = 0;
             timeLabel.Text = hour.ToString();
             EventController.updateTimeOnEventList();
+            EventController.eventLabelKiller();
         }
     }
 }
