@@ -2,6 +2,16 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
+
+/*
+    Hva om obejktet har ansvar selv for å legge seg til i kontroller objektet? kontrolleren blir fast og vil ikke flytte på seg. Et hvert objekt kan ved skapelse legge segg inn i riktig liste. Slipper man å kalle objektkontrolleren ved skapelse. Ved død kan objektet da også fjerne seg selv fra listen i kontrolleren.
+    under _Ready:
+    EventController = GetNode<EventController>("root/.../EventController")
+    EventController.EventList.Add(this);
+    
+    EventController kan da kjøre en sånn LINQ spørring kim bob snakket om og kjøre en metode som da gjør alt inn på selve objektet.
+*/
+
 public partial class EventObject : Node
 {
     private int _remainingDuration;
