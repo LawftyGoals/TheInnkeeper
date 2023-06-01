@@ -54,6 +54,7 @@ public partial class EventController : Node
 
     public void handleTimeOnEventList()
     {
+        // LINQ EventList.Where(p => p.RemainingDuration-- <1).Remove(p);
         if (EventList.Count > 0)
         {
             EventObject[] deleteList = new EventObject[EventList.Count];
