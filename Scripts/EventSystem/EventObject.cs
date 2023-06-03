@@ -2,7 +2,6 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-
 /*
     Hva om obejktet har ansvar selv for å legge seg til i kontroller objektet? kontrolleren blir fast og vil ikke flytte på seg. Et hvert objekt kan ved skapelse legge segg inn i riktig liste. Slipper man å kalle objektkontrolleren ved skapelse. Ved død kan objektet da også fjerne seg selv fra listen i kontrolleren.
     under _Ready:
@@ -27,6 +26,8 @@ public partial class EventObject : Node
         set => _eventName = value;
     }
 
+    private EventController myEventController;
+
     private List<TransactionContainer> _transactionItemsList;
 
     public List<TransactionContainer> TransactionItemsList
@@ -43,12 +44,18 @@ public partial class EventObject : Node
     //public EventObject followingEvent = null;
 
     //Constructor
+
     public EventObject(
+        Node parentNode,
         int duration,
         string name,
         List<TransactionContainer> possibleTransaction = null
     )
     {
+        parentNode.AddChild(this);
+        myEventController = GetNode<EventController>("/root/TimeControl/EventController");
+        myEventController.addEventToEventList(this);
+
         if (possibleTransaction != null)
             TransactionItemsList = possibleTransaction;
         else

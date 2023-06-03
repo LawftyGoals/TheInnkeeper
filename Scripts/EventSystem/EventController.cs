@@ -4,22 +4,25 @@ using System.Collections.Generic;
 
 public partial class EventController : Node
 {
-    List<EventObject> EventList;
-    VBoxContainer EventVBoxList;
+    private List<EventObject> _eventList;
+    public List<EventObject> EventList
+    {
+        get => _eventList;
+    }
+    private VBoxContainer EventVBoxList;
     private Button AddEvent;
 
-    Character playerCharacter;
+    private Character playerCharacter;
 
     public override void _Ready()
     {
-        EventList = new List<EventObject>();
+        _eventList = new List<EventObject>();
         EventVBoxList = GetNode<VBoxContainer>("EventVBoxContainer");
         AddEvent = GetNode<Button>("Button");
         AddEvent.Pressed += tempAddEvent;
         playerCharacter = GetNode<Character>("/root/TimeControl/PlayerCharacter");
     }
 
-    // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Process(double delta) { }
 
     public void eventLabelKiller()
@@ -35,26 +38,25 @@ public partial class EventController : Node
 
     private void tempAddEvent()
     {
-        addEventToEventList(
-            new EventObject(
-                5,
-                "boogy",
-                new List<TransactionContainer>
-                {
-                    new TransactionContainer(
-                        new Dictionary<string, int>() { { "COINS", new Random().Next(100, 200) } },
-                        playerCharacter
-                    )
-                }
-            )
+        new EventObject(
+            this,
+            5,
+            "boogy",
+            new List<TransactionContainer>
+            {
+                new TransactionContainer(
+                    new Dictionary<string, int>() { { "COINS", new Random().Next(100, 200) } },
+                    playerCharacter
+                )
+            }
         );
         // please remember the following = AddEvent.ReleaseFocus();
-        // also that there is a focus mode under inspector that can be set to None
+        // also that there is a focus mode under inspector that can be set to None <- this is what is done
     }
 
     public void handleTimeOnEventList()
     {
-        // LINQ EventList.Where(p => p.RemainingDuration-- <1).Remove(p);
+        // TODO: LINQ EventList.Where(p => p.RemainingDuration-- <1).Remove(p);
         if (EventList.Count > 0)
         {
             EventObject[] deleteList = new EventObject[EventList.Count];
@@ -66,11 +68,12 @@ public partial class EventController : Node
                 if (eventObject.RemainingDuration < 1)
                 {
                     deleteList[listIndex] = eventObject;
+                    listIndex++;
                 }
             }
             if (deleteList[0] != null)
             {
-                for (int i = 0; i < deleteList.Length; i++)
+                for (int i = deleteList.Length - 1; i >= 0; i--)
                 {
                     EventObject deletedObject = deleteList[i];
                     deleteList[i] = null;
@@ -84,7 +87,6 @@ public partial class EventController : Node
     public void addEventToEventList(EventObject eventObject)
     {
         EventList.Add(eventObject);
-        AddChild(eventObject);
         EventVBoxList.AddChild(
             new EventLabel(eventObject.EventName, eventObject.RemainingDuration, eventObject)
         );
