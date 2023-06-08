@@ -16,14 +16,15 @@ public partial class EventController : Node
 
     public override void _Ready()
     {
+        SetProcess(false);
         _eventList = new List<EventObject>();
         EventVBoxList = GetNode<VBoxContainer>("EventVBoxContainer");
         AddEvent = GetNode<Button>("Button");
         AddEvent.Pressed += tempAddEvent;
-        playerCharacter = GetNode<Character>("/root/TimeControl/PlayerCharacter");
+        playerCharacter = GetNode<Character>("/root/NodeTimeControl/NodePlayerCharacter");
     }
 
-    public override void _Process(double delta) { }
+    // public override void _Process(double delta) { }
 
     public void eventLabelKiller()
     {
@@ -59,26 +60,14 @@ public partial class EventController : Node
         // TODO: LINQ EventList.Where(p => p.RemainingDuration-- <1).Remove(p);
         if (EventList.Count > 0)
         {
-            EventObject[] deleteList = new EventObject[EventList.Count];
-            int listIndex = 0;
-
-            foreach (EventObject eventObject in EventList)
+            for (int i = EventList.Count - 1; i >= 0; i--)
             {
-                eventObject.RemainingDuration--;
-                if (eventObject.RemainingDuration < 1)
+                EventObject deleteObject = EventList[i];
+                deleteObject.RemainingDuration--;
+                if (deleteObject.RemainingDuration < 1)
                 {
-                    deleteList[listIndex] = eventObject;
-                    listIndex++;
-                }
-            }
-            if (deleteList[0] != null)
-            {
-                for (int i = deleteList.Length - 1; i >= 0; i--)
-                {
-                    EventObject deletedObject = deleteList[i];
-                    deleteList[i] = null;
-                    EventList.Remove(deletedObject);
-                    deletedObject.endObject();
+                    EventList.Remove(deleteObject);
+                    deleteObject.endObject();
                 }
             }
         }

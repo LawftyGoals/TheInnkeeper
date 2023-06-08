@@ -2,15 +2,15 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-/*
-    Hva om obejktet har ansvar selv for å legge seg til i kontroller objektet? kontrolleren blir fast og vil ikke flytte på seg. Et hvert objekt kan ved skapelse legge segg inn i riktig liste. Slipper man å kalle objektkontrolleren ved skapelse. Ved død kan objektet da også fjerne seg selv fra listen i kontrolleren.
-    under _Ready:
-    EventController = GetNode<EventController>("root/.../EventController")
-    EventController.EventList.Add(this);
-    
+/* TODO:
     EventController kan da kjøre en sånn LINQ spørring kim bob snakket om og kjøre en metode som da gjør alt inn på selve objektet.
 */
-
+/*
+  This was considered for a linked list type sturcture which would base
+  itself on the remaining duration of the object. Objects would then link
+  to the object that ends or reaches a "milestone" later in time"
+  */
+//public EventObject followingEvent = null;
 public partial class EventObject : Node
 {
     private int _remainingDuration;
@@ -36,15 +36,7 @@ public partial class EventObject : Node
         set => _transactionItemsList = value;
     }
 
-    /*
-    This was considered for a linked list type sturcture which would base
-    itself on the remaining duration of the object. Objects would then link
-    to the object that ends or reaches a "milestone" later in time"
-    */
-    //public EventObject followingEvent = null;
-
     //Constructor
-
     public EventObject(
         Node parentNode,
         int duration,
@@ -53,7 +45,7 @@ public partial class EventObject : Node
     )
     {
         parentNode.AddChild(this);
-        myEventController = GetNode<EventController>("/root/TimeControl/EventController");
+        myEventController = GetNode<EventController>("/root/NodeTimeControl/NodeEventController");
         myEventController.addEventToEventList(this);
 
         if (possibleTransaction != null)
@@ -63,6 +55,11 @@ public partial class EventObject : Node
 
         RemainingDuration = duration;
         EventName = name;
+    }
+
+    public override void _Ready()
+    {
+        SetProcess(false);
     }
 
     //public override void _Process(double delta)

@@ -32,10 +32,11 @@ public partial class Character : Node
         _coin = 500;
         coinLabel = GetNode<Label>("CoinLabel");
         coinLabel.Text = Coin.ToString();
+        SetProcess(false);
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
-    public override void _Process(double delta) { }
+    // public override void _Process(double delta) { }
 
     public void addExperience(int expAmount)
     {

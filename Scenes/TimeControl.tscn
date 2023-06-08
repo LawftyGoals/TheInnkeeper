@@ -1,10 +1,69 @@
-[gd_scene load_steps=4 format=3 uid="uid://cas7e0xxclk1c"]
+[gd_scene load_steps=6 format=3 uid="uid://fhmenp87o5ba"]
 
 [ext_resource type="Script" path="res://Scripts/TimeScripts/GameTime.cs" id="1_67rxs"]
 [ext_resource type="Script" path="res://Scripts/EventSystem/EventController.cs" id="2_ojnni"]
 [ext_resource type="Script" path="res://Scripts/Character/Character.cs" id="3_2xxwc"]
+[ext_resource type="Script" path="res://Scripts/WorldSystemScripts/WorldController.cs" id="4_vles2"]
 
-[node name="TimeControl" type="Node"]
+[sub_resource type="CSharpScript" id="CSharpScript_fk3fl"]
+script/source = "using Godot;
+using System;
+
+public partial class LocatedTown : Node
+{
+    private string[] _locationTypes = { \"TOWN\", \"DUNGEON\", \"FIELD\", \"MOUNTAIN\", \"MINE\" };
+
+    private string _locationName;
+    public string LocationName
+    {
+        get => _locationName;
+        set => _locationName = value;
+    }
+
+    private string _locationType;
+    public string LocationType
+    {
+        get => _locationType;
+    }
+
+    private Vector2 _locationCoordinates;
+    public Vector2 LocationCoordinates
+    {
+        get => _locationCoordinates;
+    }
+
+    private string _controllingFaction;
+    public string ControllingFaction
+    {
+        get => _controllingFaction;
+        set => _controllingFaction = value;
+    }
+
+    public LocatedTown(
+        string locationName,
+        int locationType,
+        Vector2 locationCoordinates,
+        string controllingFaction
+    )
+    {
+        _locationName = locationName;
+        _locationType = _locationTypes[locationType];
+        _locationCoordinates = locationCoordinates;
+        _controllingFaction = controllingFaction;
+    }
+
+    // Called when the node enters the scene tree for the first time.
+    public override void _Ready()
+    {
+        SetProcess(false);
+    }
+
+    // Called every frame. 'delta' is the elapsed time since the previous frame.
+    // public override void _Process(double delta) { }
+}
+"
+
+[node name="NodeTimeControl" type="Node"]
 script = ExtResource("1_67rxs")
 
 [node name="TimeLabel" type="Label" parent="."]
@@ -13,22 +72,16 @@ offset_top = 54.0
 offset_right = 379.0
 offset_bottom = 77.0
 
-[node name="EventController" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="NodeEventController" type="Node" parent="."]
 script = ExtResource("2_ojnni")
 
-[node name="EventVBoxContainer" type="VBoxContainer" parent="EventController"]
-layout_mode = 0
+[node name="EventVBoxContainer" type="VBoxContainer" parent="NodeEventController"]
 offset_left = 405.0
 offset_top = 229.0
 offset_right = 580.0
 offset_bottom = 341.0
 
-[node name="Button" type="Button" parent="EventController"]
-layout_mode = 0
+[node name="Button" type="Button" parent="NodeEventController"]
 offset_left = 76.0
 offset_top = 34.0
 offset_right = 138.0
@@ -36,11 +89,17 @@ offset_bottom = 52.0
 focus_mode = 0
 text = "Add Event"
 
-[node name="PlayerCharacter" type="Node" parent="."]
+[node name="NodePlayerCharacter" type="Node" parent="."]
 script = ExtResource("3_2xxwc")
 
-[node name="CoinLabel" type="Label" parent="PlayerCharacter"]
+[node name="CoinLabel" type="Label" parent="NodePlayerCharacter"]
 offset_left = 283.0
 offset_top = 33.0
 offset_right = 323.0
 offset_bottom = 56.0
+
+[node name="NodeWorldController" type="Node" parent="."]
+script = ExtResource("4_vles2")
+
+[node name="NodeLocatedTown" type="Node" parent="NodeWorldController"]
+script = SubResource("CSharpScript_fk3fl")
