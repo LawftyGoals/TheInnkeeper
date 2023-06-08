@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class LocatedTown : Node
+public partial class GeneralLocation : Node
 {
     private string[] _locationTypes = { "TOWN", "DUNGEON", "FIELD", "MOUNTAIN", "MINE" };
 
@@ -31,7 +31,7 @@ public partial class LocatedTown : Node
         set => _controllingFaction = value;
     }
 
-    public LocatedTown(
+    public GeneralLocation(
         string locationName,
         int locationType,
         Vector2 locationCoordinates,

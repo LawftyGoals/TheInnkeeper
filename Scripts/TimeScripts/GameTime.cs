@@ -5,6 +5,14 @@ public partial class GameTime : Node
 {
     private int speed;
     private int hour;
+    private int _days;
+
+    public int Days
+    {
+        get => _days;
+        set => _days = value;
+    }
+
     private bool paused = true;
     private double _deltaConvert;
     public double DeltaConvert
@@ -16,19 +24,29 @@ public partial class GameTime : Node
     double[] speedValues = { 2, 1, 0.75, 0.5, 0.25 };
 
     Label timeLabel;
+    Label dateLabel;
 
     EventController EventController;
+    PopulationMechanics Population;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
         hour = 0;
+        _days = 0;
         speed = 1;
 
         DeltaConvert = 0;
 
         timeLabel = GetNode<Label>("TimeLabel");
+        dateLabel = GetNode<Label>("DateLabel");
+
+        timeLabel.Text = hour.ToString();
+        timeLabel.Text = _days.ToString();
+
         EventController = GetNode<EventController>("NodeEventController");
+
+        Population = new PopulationMechanics();
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -42,22 +60,7 @@ public partial class GameTime : Node
 
     public override void _UnhandledInput(InputEvent @event)
     {
-        if (@event is InputEventKey eventKey && eventKey.Pressed)
-        {
-            var pressed = eventKey.Keycode;
-            switch (pressed)
-            {
-                case Key.Period:
-                    addSpeed();
-                    break;
-                case Key.Comma:
-                    reduceSpeed();
-                    break;
-                case Key.Space:
-                    togglePause();
-                    break;
-            }
-        }
+        _inputHandler(@event);
     }
 
     public void togglePause()
@@ -85,15 +88,67 @@ public partial class GameTime : Node
         if (DeltaConvert >= speedValues[speed])
         {
             hour++;
+            addDay();
             DeltaConvert = 0;
             updatePresentedTime();
             EventController.handleTimeOnEventList();
             EventController.eventLabelKiller();
+            Population.births();
+        }
+    }
+
+    private void addDay()
+    {
+        if (hour == 24)
+        {
+            hour = 0;
+            _days++;
         }
     }
 
     public void updatePresentedTime()
     {
         timeLabel.Text = $"{speed.ToString()} :  {hour.ToString()}";
+        dateLabel.Text = _days.ToString();
+    }
+
+    private void _inputHandler(InputEvent @event)
+    {
+        if (@event is InputEventKey eventKey && eventKey.Pressed)
+        {
+            var pressed = eventKey.Keycode;
+            switch (pressed)
+            {
+                case Key.Period:
+                    addSpeed();
+                    break;
+                case Key.Comma:
+                    reduceSpeed();
+                    break;
+                case Key.Space:
+                    togglePause();
+                    break;
+                case Key.Key1:
+                    speed = 0;
+                    updatePresentedTime();
+                    break;
+                case Key.Key2:
+                    speed = 1;
+                    updatePresentedTime();
+                    break;
+                case Key.Key3:
+                    speed = 2;
+                    updatePresentedTime();
+                    break;
+                case Key.Key4:
+                    speed = 3;
+                    updatePresentedTime();
+                    break;
+                case Key.Key5:
+                    speed = 4;
+                    updatePresentedTime();
+                    break;
+            }
+        }
     }
 }
