@@ -10,6 +10,7 @@ public partial class PopulationMechanics
     private float _percentageFertileF;
     private int _numberOfMales;
     private float _percentageFertileM;
+    private float _maleskew = 0.5145631067961165f;
 
     private float _birthFactor;
 
@@ -40,21 +41,45 @@ public partial class PopulationMechanics
     {
         if (_birthProgress >= 1)
         {
-            double mOrF = new Random().NextDouble();
-            if (mOrF < 0.5145631067961165)
+            while (_birthProgress > 1)
             {
-                _numberOfMales++;
+                double mOrF = new Random().NextDouble();
+                if (mOrF < _maleskew)
+                {
+                    _numberOfMales++;
+                }
+                else
+                {
+                    _numberOfFemales++;
+                }
+                _birthProgress--;
             }
-            else
-            {
-                _numberOfFemales++;
-            }
-            _birthProgress = _birthProgress % 1;
         }
 
-        GD.Print(
-            _numberOfFemales * _percentageFertileF * _percentageFertileM * _birthFactor / 365 / 24
-        );
+        double _possibleBirths =
+            new Random().NextDouble()
+            * _numberOfFemales
+            * _percentageFertileF
+            * _percentageFertileM
+            * _birthFactor;
+
+        int coinflip = new Random().Next(0, 2);
+
+        if (coinflip > 0)
+        {
+            _possibleBirths = 1 / _possibleBirths;
+        }
+
+        _birthProgress +=
+            (float)_possibleBirths
+            * _percentageFertileF
+            * _percentageFertileM
+            * _birthFactor
+            / 365
+            / 24;
+
+        GD.Print(PopulationTotal);
+        GD.Print(_birthProgress);
     }
 
     public void deaths() { }
