@@ -46,3 +46,9 @@ offset_bottom = 56.0
 
 [node name="NodeWorldController" type="Node" parent="."]
 script = ExtResource("4_vles2")
+
+[node name="PopLabel" type="Label" parent="."]
+offset_left = 69.0
+offset_top = 80.0
+offset_right = 109.0
+offset_bottom = 103.0
