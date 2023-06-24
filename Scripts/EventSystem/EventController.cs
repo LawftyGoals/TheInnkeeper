@@ -21,7 +21,9 @@ public partial class EventController : Node
         EventVBoxList = GetNode<VBoxContainer>("EventVBoxContainer");
         AddEvent = GetNode<Button>("Button");
         AddEvent.Pressed += tempAddEvent;
-        playerCharacter = GetNode<Character>("/root/NodeTimeControl/NodePlayerCharacter");
+        playerCharacter = GetNode<Character>(
+            "/root/NodeTimeControl/NodeWorldController/NodePlayerCharacter"
+        );
     }
 
     // public override void _Process(double delta) { }

@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://bcucyn8a10kiq"]
+[gd_scene load_steps=6 format=3 uid="uid://bcucyn8a10kiq"]
 
 [ext_resource type="Script" path="res://Scripts/TimeScripts/GameTime.cs" id="1_67rxs"]
 [ext_resource type="Script" path="res://Scripts/EventSystem/EventController.cs" id="2_ojnni"]
 [ext_resource type="Script" path="res://Scripts/Character/Character.cs" id="3_2xxwc"]
 [ext_resource type="Script" path="res://Scripts/WorldSystemScripts/WorldController.cs" id="4_vles2"]
+[ext_resource type="Script" path="res://Scripts/InnSystem/InnController.cs" id="5_nd3u6"]
 
 [node name="NodeTimeControl" type="Node"]
 script = ExtResource("1_67rxs")
@@ -35,17 +36,20 @@ offset_bottom = 52.0
 focus_mode = 0
 text = "Add Event"
 
-[node name="NodePlayerCharacter" type="Node" parent="."]
+[node name="NodeWorldController" type="Node" parent="."]
+script = ExtResource("4_vles2")
+
+[node name="NodeInnController" type="Node" parent="NodeWorldController"]
+script = ExtResource("5_nd3u6")
+
+[node name="NodePlayerCharacter" type="Node" parent="NodeWorldController"]
 script = ExtResource("3_2xxwc")
 
-[node name="CoinLabel" type="Label" parent="NodePlayerCharacter"]
+[node name="CoinLabel" type="Label" parent="NodeWorldController/NodePlayerCharacter"]
 offset_left = 283.0
 offset_top = 33.0
 offset_right = 323.0
 offset_bottom = 56.0
-
-[node name="NodeWorldController" type="Node" parent="."]
-script = ExtResource("4_vles2")
 
 [node name="PopLabel" type="Label" parent="."]
 offset_left = 69.0

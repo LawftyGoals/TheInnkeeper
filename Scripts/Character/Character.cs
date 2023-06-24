@@ -10,6 +10,13 @@ public partial class Character : Node
         get => _name;
         set => _name = value;
     }
+
+    //TODO:
+    private string _firstName;
+    private string _middleName;
+    private string _nickName;
+    private string _lastName;
+
     private int _coin;
     public int Coin
     {
