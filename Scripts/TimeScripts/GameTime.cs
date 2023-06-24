@@ -21,13 +21,14 @@ public partial class GameTime : Node
         set => _deltaConvert = value;
     }
 
-    double[] speedValues = { 2, 1, 0.75, 0.5, 0.25 };
+    private double[] speedValues = { 2, 1, 0.75, 0.5, 0.25, 0.05 };
 
     Label timeLabel;
     Label dateLabel;
 
     EventController EventController;
     PopulationMechanics Population;
+    Label popLabel;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -47,6 +48,8 @@ public partial class GameTime : Node
         EventController = GetNode<EventController>("NodeEventController");
 
         Population = new PopulationMechanics();
+
+        popLabel = GetNode<Label>("PopLabel");
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -71,7 +74,7 @@ public partial class GameTime : Node
     private void addSpeed()
     {
         updatePresentedTime();
-        if (speed < 4)
+        if (speed < 5)
             speed++;
     }
 
@@ -94,6 +97,7 @@ public partial class GameTime : Node
             EventController.handleTimeOnEventList();
             EventController.eventLabelKiller();
             Population.births();
+            popLabel.Text = Population.PopulationTotal.ToString();
         }
     }
 
