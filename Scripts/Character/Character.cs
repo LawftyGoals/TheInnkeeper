@@ -32,6 +32,13 @@ public partial class Character : Node
 
     public Label coinLabel;
 
+    public Character() { }
+
+    public Character(string charName)
+    {
+        _name = charName;
+    }
+
     public override void _Ready()
     {
         CharacterName = "Innkeeper";

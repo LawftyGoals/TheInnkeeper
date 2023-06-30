@@ -9,6 +9,14 @@ public partial class EventController : Node
     {
         get => _eventList;
     }
+
+    private List<EventObject> _playerActiveEventList;
+    private List<EventObject> _playerInactiveEventList;
+
+    private List<EventObject> _worldActiveEventList;
+    private List<EventObject> _worldInactiveEventList;
+    private List<EventObject> _worldForPlayerActiveEventList;
+
     private VBoxContainer EventVBoxList;
     private Button AddEvent;
 
@@ -17,13 +25,22 @@ public partial class EventController : Node
     public override void _Ready()
     {
         SetProcess(false);
+
         _eventList = new List<EventObject>();
         EventVBoxList = GetNode<VBoxContainer>("EventVBoxContainer");
-        AddEvent = GetNode<Button>("Button");
-        AddEvent.Pressed += tempAddEvent;
+
         playerCharacter = GetNode<Character>(
             "/root/NodeTimeControl/NodeWorldController/NodePlayerCharacter"
         );
+
+        _playerActiveEventList = new List<EventObject>();
+        _playerInactiveEventList = new List<EventObject>();
+        _worldActiveEventList = new List<EventObject>();
+        _worldInactiveEventList = new List<EventObject>();
+        _worldForPlayerActiveEventList = new List<EventObject>();
+
+        AddEvent = GetNode<Button>("Button");
+        AddEvent.Pressed += tempAddEvent;
     }
 
     // public override void _Process(double delta) { }

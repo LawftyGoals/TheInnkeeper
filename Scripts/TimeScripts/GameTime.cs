@@ -25,10 +25,11 @@ public partial class GameTime : Node
 
     Label timeLabel;
     Label dateLabel;
+    Label popLabel;
 
     EventController EventController;
     PopulationMechanics Population;
-    Label popLabel;
+    WorldController World;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -41,6 +42,7 @@ public partial class GameTime : Node
 
         timeLabel = GetNode<Label>("TimeLabel");
         dateLabel = GetNode<Label>("DateLabel");
+        popLabel = GetNode<Label>("PopLabel");
 
         timeLabel.Text = hour.ToString();
         timeLabel.Text = _days.ToString();
@@ -48,8 +50,7 @@ public partial class GameTime : Node
         EventController = GetNode<EventController>("NodeEventController");
 
         Population = new PopulationMechanics();
-
-        popLabel = GetNode<Label>("PopLabel");
+        World = GetNode<WorldController>("NodeWorldController");
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -93,10 +94,14 @@ public partial class GameTime : Node
             hour++;
             addDay();
             DeltaConvert = 0;
+
             updatePresentedTime();
+
             EventController.handleTimeOnEventList();
             EventController.eventLabelKiller();
+
             Population.births();
+            World.runWorld();
             popLabel.Text = Population.PopulationTotal.ToString();
         }
     }
