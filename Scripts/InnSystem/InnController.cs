@@ -29,16 +29,43 @@ public partial class InnController : Node
     }
 
     private List<Character> _guestList = new List<Character>();
+    Label guestLabel;
+
+    public override void _Ready()
+    {
+        SetProcess(false);
+
+        _innOwner = GetNode<Character>(
+            "/root/NodeTimeControl/NodeWorldController/NodePlayerCharacter"
+        );
+        _innName = $"{_innOwner.CharacterName}'s Inn";
+        _availableCapacity = 11;
+        guestLabel = GetNode<Label>("GuestLabel");
+    }
 
     private int checkCapacity()
     {
         return _availableCapacity - _guestList.Count;
     }
 
-    public override void _Ready()
+    public string showGuestList()
     {
-        _innName = $"{_innOwner.CharacterName}'s Inn";
-        _availableCapacity = 11;
+        string guestList = "";
+        foreach (Character guest in _guestList)
+        {
+            guestList += guest.CharacterName + ", ";
+        }
+        return guestList;
+    }
+
+    public void addGuest(Character guest)
+    {
+        _guestList.Add(guest);
+    }
+
+    public void runInn()
+    {
+        guestLabel.Text = showGuestList();
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
