@@ -26,7 +26,16 @@ public partial class EventObject : Node
         set => _eventName = value;
     }
 
-    private EventController myEventController;
+    private Boolean _active = false;
+    public Boolean Active
+    {
+        get => _active;
+        set => _active = value;
+    }
+
+    private List<EventObject> parentControllerEventList;
+
+    private EventController parentEventController;
 
     private List<TransactionContainer> _transactionItemsList;
 
@@ -45,8 +54,13 @@ public partial class EventObject : Node
     )
     {
         parentNode.AddChild(this);
-        myEventController = GetNode<EventController>("/root/NodeTimeControl/NodeEventController");
-        myEventController.addEventToEventList(this);
+        parentEventController = GetNode<EventController>(
+            "/root/NodeTimeControl/NodeEventController"
+        );
+
+        GD.Print(parentEventController);
+        parentEventController.addEventToEventList(this);
+        parentControllerEventList = parentEventController.NPCharacterDrivenEventList;
 
         if (possibleTransaction != null)
             TransactionItemsList = possibleTransaction;
@@ -71,6 +85,16 @@ public partial class EventObject : Node
     {
         performTransaction();
         QueueFree();
+    }
+
+    public void durationReduction(int hours = 1)
+    {
+        _remainingDuration -= hours;
+    }
+
+    public void performEventObjectActions()
+    {
+        durationReduction();
     }
 
     private void performTransaction()

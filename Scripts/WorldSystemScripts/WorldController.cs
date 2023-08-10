@@ -18,11 +18,12 @@ public partial class WorldController : Node
             "/root/NodeTimeControl/NodeWorldController/NodePlayerCharacter"
         );
         _playerInn.InnOwner = _playerCharacter;
+        _playerCharacter.CharacterType = "Player";
     }
 
     public Character createRandomCharacter(string characterName)
     {
-        return new Character(characterName);
+        return new Character(characterName, "NPC");
     }
 
     public void runWorld()

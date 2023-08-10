@@ -4,10 +4,10 @@ using System.Collections.Generic;
 
 public partial class EventController : Node
 {
-    private List<EventObject> _eventList;
-    public List<EventObject> EventList
+    private List<EventObject> _nPCDrivenEventList;
+    public List<EventObject> NPCharacterDrivenEventList
     {
-        get => _eventList;
+        get => _nPCDrivenEventList;
     }
 
     private List<EventObject> _playerActiveEventList;
@@ -26,7 +26,7 @@ public partial class EventController : Node
     {
         SetProcess(false);
 
-        _eventList = new List<EventObject>();
+        _nPCDrivenEventList = new List<EventObject>();
         EventVBoxList = GetNode<VBoxContainer>("EventVBoxContainer");
 
         playerCharacter = GetNode<Character>(
@@ -77,15 +77,15 @@ public partial class EventController : Node
     public void handleTimeOnEventList()
     {
         // TODO: LINQ EventList.Where(p => p.RemainingDuration-- <1).Remove(p);
-        if (EventList.Count > 0)
+        if (NPCharacterDrivenEventList.Count > 0)
         {
-            for (int i = EventList.Count - 1; i >= 0; i--)
+            for (int i = NPCharacterDrivenEventList.Count - 1; i >= 0; i--)
             {
-                EventObject deleteObject = EventList[i];
-                deleteObject.RemainingDuration--;
+                EventObject deleteObject = NPCharacterDrivenEventList[i];
+                deleteObject.performEventObjectActions();
                 if (deleteObject.RemainingDuration < 1)
                 {
-                    EventList.Remove(deleteObject);
+                    NPCharacterDrivenEventList.Remove(deleteObject);
                     deleteObject.endObject();
                 }
             }
@@ -94,7 +94,7 @@ public partial class EventController : Node
 
     public void addEventToEventList(EventObject eventObject)
     {
-        EventList.Add(eventObject);
+        NPCharacterDrivenEventList.Add(eventObject);
         EventVBoxList.AddChild(
             new EventLabel(eventObject.EventName, eventObject.RemainingDuration, eventObject)
         );

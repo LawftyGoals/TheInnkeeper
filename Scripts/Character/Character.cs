@@ -4,6 +4,12 @@ using System.Collections.Generic;
 
 public partial class Character : Node
 {
+    private string _characterType;
+    public string CharacterType
+    {
+        get => _characterType;
+        set => _characterType = value;
+    }
     private string _name;
     public string CharacterName
     {
@@ -30,13 +36,28 @@ public partial class Character : Node
         //set => _experience = value;
     }
 
+    private List<EventObject> _activeEventList = new List<EventObject>();
+
+    public List<EventObject> ActiveEventList
+    {
+        get => _activeEventList;
+    }
+
+    private List<EventObject> _inactiveEventList = new List<EventObject>();
+
+    public List<EventObject> InctiveEventList
+    {
+        get => _inactiveEventList;
+    }
+
     public Label coinLabel;
 
     public Character() { }
 
-    public Character(string charName)
+    public Character(string charName, string characterType)
     {
         _name = charName;
+        _characterType = characterType;
     }
 
     public override void _Ready()
@@ -70,5 +91,20 @@ public partial class Character : Node
     public void removeCoins(int coinAmount)
     {
         _coin -= coinAmount;
+    }
+
+    public void addEventToEventList(EventObject newEventObject)
+    {
+        _activeEventList.Add(newEventObject);
+    }
+
+    public void runCharacterActions() { }
+
+    private void loopAndExecuteEvents()
+    {
+        foreach (EventObject eventObject in ActiveEventList)
+        {
+            eventObject.performEventObjectActions();
+        }
     }
 }

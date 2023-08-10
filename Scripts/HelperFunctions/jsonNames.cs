@@ -17,7 +17,7 @@ namespace jsonNames
         public string returnName()
         {
             string jsonString = File.ReadAllText("lib/Content/Names.json");
-            jsonNamesInterface? charName = Deserialize<jsonNamesInterface>(jsonString);
+            jsonNamesInterface charName = Deserialize<jsonNamesInterface>(jsonString);
 
             return charName.firstNames[new Random().Next(0, charName.firstNames.Length)]
                 + " "
